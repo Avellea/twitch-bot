@@ -9,6 +9,7 @@ import handleCommand from './commandHandler.js';
 
 // Event functions
 import emoteOnlyEvent from '../events/emoteOnly.js';
+import subscribeEvent from '../events/onSubscribe.js';
 
 // This variable, and the following array, may get moved to a config file later.
 const MY_CHANNEL = 'kazukivt';
@@ -61,4 +62,9 @@ chatClient.onMessage((channel, user, message, msg) => {
 chatClient.onEmoteOnly((channel, enabled) => {
     emoteOnlyEvent(channel, enabled, chatClient);
     // console.log(`Emote-only mode is now ${enabled ? 'enabled' : 'disabled'} in ${channel}`);
+});
+
+chatClient.onSub((channel, user, subInfo, msg, chatClient) => {
+    subscribeEvent(channel, user, subInfo, msg, chatClient);
+    // console.log(`User ${user} has subscribed to ${channel}. Sub info:`, subInfo);
 });
