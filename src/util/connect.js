@@ -45,6 +45,6 @@ export function connect() {
 chatClient.onMessage((channel, user, message, msg) => {
     if(!message.startsWith('!')) return; // Ignore messages that don't start with '!'
 
-    // Handle the command
-    handleCommand(message, user, channel, apiClient, chatClient);
+    // Pass off the message to the command handler
+    handleCommand(channel, user, message, msg, apiClient, chatClient);
 });

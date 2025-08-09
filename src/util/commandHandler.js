@@ -10,11 +10,8 @@ import shoutoutCommand from '../commands/shoutout.js';
 
 import modCheck from '../util/modCheck.js';
 
-export default function handleCommand(message, user, channel, apiClient, chatClient) {
+export default function handleCommand(channel, user, message, msg, apiClient, chatClient) {
     
-    // Just for debugging, say every user is a moderator.
-    // I'll figure out how to actually implement this later :3
-    var isMod = false;
 
     message = removeUnicodeChar(message);
     console.log(
@@ -42,7 +39,7 @@ export default function handleCommand(message, user, channel, apiClient, chatCli
 
     if (message.toLowerCase().startsWith('!so')) {
         // Check if the user is a moderator
-        if (!isMod) {
+        if (!modCheck(user, msg)) {
             chatClient.say(channel, `Sorry ${user}, you need to be a moderator to use this command.`);
             return;
         }
@@ -60,7 +57,7 @@ export default function handleCommand(message, user, channel, apiClient, chatCli
 
     // Debug command only!
     if (message.toLowerCase() === '!modcheck') {
-        modCheck(user, channel, apiClient, chatClient);
+        modCheck(user, channel, msg, chatClient);
         return;
     }
 

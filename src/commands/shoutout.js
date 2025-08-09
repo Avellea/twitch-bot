@@ -1,3 +1,8 @@
+// This command should be moderator only.
+// It sends a shoutout message to the specified user in the channel.
+// Safety checking is done, so the sender does not need to worry about including the @ sign,
+// though it helps with autocomplete.
+
 export default function shoutoutCommand(user, channel, chatClient) {
 
     if (user.charAt(0) === '@') {
