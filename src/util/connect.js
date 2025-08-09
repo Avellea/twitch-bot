@@ -46,6 +46,7 @@ export function connect() {
     }
 }
 
+
 /*
     Event listeners
     These will listen for events in the chat or channel and respond accordingly.
