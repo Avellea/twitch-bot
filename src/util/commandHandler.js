@@ -3,6 +3,7 @@ import removeUnicodeChar from './sanitize.js';
 
 // Commands
 import discordCommand from '../commands/discord.js';
+import helpCommand from '../commands/help.js';
 import lurkCommand from '../commands/lurk.js';
 import quoteCreate from '../commands/quoteCreate.js';
 import quoteCommand from '../commands/quote.js';
@@ -23,6 +24,12 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
 
     if (message.toLowerCase() === '!discord') {
         discordCommand(channel, chatClient);
+        return;
+    }
+
+
+    if (message.toLowerCase() === '!help') {
+        helpCommand(channel, user, chatClient);
         return;
     }
 
