@@ -4,6 +4,7 @@ import removeUnicodeChar from './sanitize.js';
 // Commands
 import discordCommand from '../commands/discord.js';
 import lurkCommand from '../commands/lurk.js';
+import quoteCreate from '../commands/quoteCreate.js';
 import quoteCommand from '../commands/quote.js';
 import rollCommand from '../commands/roll.js';
 import shoutoutCommand from '../commands/shoutout.js';
@@ -32,6 +33,19 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
     }
 
 
+    if (message.toLowerCase().startsWith('!addquote')) {
+        // Check if the user is a moderator
+        if (!modCheck(user, msg)) {
+            chatClient.say(channel, `Sorry ${user}, you need to be a moderator to use this command.`);
+            return;
+        }
+
+        quoteCreate(channel, user, message, chatClient);
+
+        return;
+    }
+
+
     if (message.toLowerCase().startsWith('!quote')) {
         quoteCommand(channel, user, message, chatClient);
         return;
@@ -50,7 +64,6 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
             chatClient.say(channel, `Sorry ${user}, you need to be a moderator to use this command.`);
             return;
         }
-
 
         const targetUser = message.split(' ')[1];
 
