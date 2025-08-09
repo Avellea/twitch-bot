@@ -8,7 +8,6 @@ import { ApiClient } from '@twurple/api';
 import handleCommand from './commandHandler.js';
 
 // Event functions
-// import followEvent from '../events/follow.js';
 import emoteOnlyEvent from '../events/emoteOnly.js';
 
 // This variable, and the following array, may get moved to a config file later.
@@ -57,10 +56,6 @@ chatClient.onMessage((channel, user, message, msg) => {
 
     // Pass off the message to the command handler
     handleCommand(channel, user, message, msg, apiClient, chatClient);
-});
-
-chatClient.onFollowersOnly((channel, enabled) => {
-    console.log(`Followers-only mode is now ${enabled ? 'enabled' : 'disabled'} in ${channel}`);
 });
 
 chatClient.onEmoteOnly((channel, enabled) => {
