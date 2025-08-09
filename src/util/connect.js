@@ -2,10 +2,14 @@ import 'dotenv/config';
 
 import { StaticAuthProvider } from '@twurple/auth';
 import { ChatClient } from '@twurple/chat';
-import { ApiClient, HelixUserApi } from '@twurple/api';
+import { ApiClient } from '@twurple/api';
 
 // Utility functions
 import handleCommand from './commandHandler.js';
+
+// Event functions
+// import followEvent from '../events/follow.js';
+import emoteOnlyEvent from '../events/emoteOnly.js';
 
 // This variable, and the following array, may get moved to a config file later.
 const MY_CHANNEL = 'kazukivt';
@@ -42,9 +46,23 @@ export function connect() {
     }
 }
 
+/*
+    Event listeners
+    These will listen for events in the chat or channel and respond accordingly.
+*/
+
 chatClient.onMessage((channel, user, message, msg) => {
     if(!message.startsWith('!')) return; // Ignore messages that don't start with '!'
 
     // Pass off the message to the command handler
     handleCommand(channel, user, message, msg, apiClient, chatClient);
+});
+
+chatClient.onFollowersOnly((channel, enabled) => {
+    console.log(`Followers-only mode is now ${enabled ? 'enabled' : 'disabled'} in ${channel}`);
+});
+
+chatClient.onEmoteOnly((channel, enabled) => {
+    emoteOnlyEvent(channel, enabled, chatClient);
+    // console.log(`Emote-only mode is now ${enabled ? 'enabled' : 'disabled'} in ${channel}`);
 });
