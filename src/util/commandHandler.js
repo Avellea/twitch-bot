@@ -4,6 +4,7 @@ import removeUnicodeChar from './sanitize.js';
 // Commands
 import discordCommand from '../commands/discord.js';
 import lurkCommand from '../commands/lurk.js';
+import quoteCommand from '../commands/quote.js';
 import rollCommand from '../commands/roll.js';
 import shoutoutCommand from '../commands/shoutout.js';
 
@@ -27,6 +28,12 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
 
     if (message.toLowerCase() === '!lurk') {
         lurkCommand(user, channel, chatClient);
+        return;
+    }
+
+
+    if (message.toLowerCase().startsWith('!quote')) {
+        quoteCommand(channel, user, message, chatClient);
         return;
     }
 
