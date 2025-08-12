@@ -9,7 +9,7 @@ export default function quoteCommand(channel, user, message, chatClient) {
         return;
     }
 
-    fs.readFile(`quotes/${quoteNumber}.txt`, 'utf8', (err, data) => {
+    fs.readFile(`quotes/${channel}/${quoteNumber}.txt`, 'utf8', (err, data) => {
         if (err) {
             console.error(`Error reading quote ${quoteNumber}:`, err);
             chatClient.say(channel, `@${user}, I couldn't find quote #${quoteNumber}. Please check the number and try again.`);

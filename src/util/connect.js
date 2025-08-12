@@ -40,9 +40,19 @@ export function connect() {
         console.log(`Connecting to chat as ${MY_CHANNEL}...`);
         chatClient.connect();
         console.log('Connected to chat.');
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error connecting to chat:', error);
+    }
+}
+
+// Unused for now.
+export function disconnect() {
+    try {
+        console.log('Disconnecting from chat...');
+        chatClient.quit();
+        console.log('Disconnected from chat.');
+    } catch (error) {
+        console.error('Error disconnecting from chat:', error);
     }
 }
 

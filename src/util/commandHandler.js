@@ -81,7 +81,6 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
         }
     }
 
-
     // Debug command only!
     if (message.toLowerCase() === '!modcheck') {
         modCheck(user, channel, msg, chatClient);
