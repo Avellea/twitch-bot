@@ -2,6 +2,7 @@
 import removeUnicodeChar from './sanitize.js';
 
 // Commands
+import coinflipCommand from '../commands/coinflip.js';
 import discordCommand from '../commands/discord.js';
 import helpCommand from '../commands/help.js';
 import lurkCommand from '../commands/lurk.js';
@@ -21,6 +22,12 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
         `Received message from ${user} in ${channel}: ${message} `
     );
     
+
+    if (message.toLowerCase() === '!coinflip') {
+        coinflipCommand(channel, user, chatClient);
+        return;
+    }
+
 
     if (message.toLowerCase() === '!discord') {
         discordCommand(channel, chatClient);
