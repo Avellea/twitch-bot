@@ -18,5 +18,13 @@
     "@twurple/eventsub-ws": "^7.4.0",
     "dotenv": "^17.2.1",
     "twurple": "^1.0.0"
+  },
+  "devDependencies": {
+    "@eslint/css": "^0.10.0",
+    "@eslint/js": "^9.33.0",
+    "@eslint/json": "^0.13.1",
+    "@eslint/markdown": "^7.1.0",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0"
   }
 }

@@ -1,3 +1,8 @@
+// This command is to be used in tandem with `./quote.js`.
+// When executed with an argument, it will add the text as a new quote in the channel's quote folder.
+// The command will get the number of existing files in the channels directory and add one to keep the quotes sequential.
+// If no argument is provided, it will prompt the user to provide a quote.
+
 import * as fs from 'fs';
 
 export default function quoteCreate(channel, user, message, chatClient) {

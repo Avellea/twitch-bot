@@ -10,6 +10,7 @@ import handleCommand from './commandHandler.js';
 // Event functions
 import emoteOnlyEvent from '../events/emoteOnly.js';
 import subscribeEvent from '../events/onSubscribe.js';
+import resubscribeEvent from '../events/onResubscribe.js';
 
 // This variable, and the following array, may get moved to a config file later.
 const MY_CHANNEL = 'kazukivt';
@@ -78,3 +79,7 @@ chatClient.onSub((channel, user, subInfo, msg, chatClient) => {
     subscribeEvent(channel, user, subInfo, msg, chatClient);
     // console.log(`User ${user} has subscribed to ${channel}. Sub info:`, subInfo);
 });
+
+chatClient.onResub((channel, user, subInfo, msg, chatClient) => {
+    resubscribeEvent(channel, user, subInfo, msg, chatClient);
+})

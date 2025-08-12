@@ -1,3 +1,9 @@
+// I see lots of other streamers and such have a quote command, so this is my take on it.
+// This command reads all of the text files in a folder named after the channel it was executed in,
+// then selects either a random quote (if no argument is provided) or a quote matching the provided number.
+
+// I should refactor this eventually instead of constant file listing, maybe a cache? Irdk.
+
 import * as fs from 'fs';
 
 export default function quoteCommand(channel, user, message, chatClient) {
@@ -10,10 +16,10 @@ export default function quoteCommand(channel, user, message, chatClient) {
         })
         return;
     }
-    getQuote(quoteNumber, channel, chatClient);
+    getQuote(quoteNumber, user, channel, chatClient);
 }
 
-function getQuote(quoteNumber, channel, chatClient) {
+function getQuote(quoteNumber, user, channel, chatClient) {
     fs.readFile(`quotes/${channel}/${quoteNumber}.txt`, 'utf8', (err, data) => {
         if (err) {
             console.error(`Error reading quote ${quoteNumber}:`, err);

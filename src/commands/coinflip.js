@@ -1,7 +1,6 @@
-export default function coinflipCommand(channel, user, chatClient) {
-    // Generate a random number between 0 and 1
-    const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
+// Just a basic coin flip command. Can be used for bets or decisions I guess?
 
-    // Send the result to the chat
+export default function coinflipCommand(channel, user, chatClient) {
+    const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
     chatClient.say(channel, `${user}, you flipped a coin and got: ${result}`);
 }
