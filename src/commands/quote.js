@@ -1,14 +1,19 @@
 import * as fs from 'fs';
 
 export default function quoteCommand(channel, user, message, chatClient) {
-    // Extract the quote number from the message
     const quoteNumber = message.split(' ')[1];
 
     if (!quoteNumber) {
-        chatClient.say(channel, `@${user}, please provide a quote number.`);
+        fs.readdir(`quotes/${channel}`, (err, files) => {
+            var randomQuote = Math.floor((Math.random() * files.length) + 1);
+            getQuote(randomQuote, channel, chatClient);
+        })
         return;
     }
+    getQuote(quoteNumber, channel, chatClient);
+}
 
+function getQuote(quoteNumber, channel, chatClient) {
     fs.readFile(`quotes/${channel}/${quoteNumber}.txt`, 'utf8', (err, data) => {
         if (err) {
             console.error(`Error reading quote ${quoteNumber}:`, err);
