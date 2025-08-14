@@ -26,20 +26,9 @@ const authProvider = new StaticAuthProvider(
     process.env.TWITCH_ACCESS_TOKEN
 );
 
+
 const apiClient = new ApiClient({ authProvider });
 
-async function getBannedUsers(channelName) {
-    const user = await api.users.getUserByName(channelName);
-    const paginator = api.moderation.getBannedUsersPaginated(user);
-    const bannedUsers = [];
-    for await(const ban of paginator) {
-        bannedUsers.push({
-            userName: ban.userName
-        });
-    }
-    return bannedUsers;
-    // console.log(user);
-}
 
 // This is the actual "client" that does the chatting. 
 const chatClient = new ChatClient({
@@ -79,20 +68,14 @@ export function disconnect() {
 
 chatClient.onMessage((channel, user, message, msg) => {
     messageEvent(channel, user, message, msg, apiClient, chatClient);
-    // if(!message.startsWith('!')) return; // Ignore messages that don't start with '!'
-
-    // Pass off the message to the command handler
-    // handleCommand(channel, user, message, msg, apiClient, chatClient);
 });
 
 chatClient.onEmoteOnly((channel, enabled) => {
     emoteOnlyEvent(channel, enabled, chatClient);
-    // console.log(`Emote-only mode is now ${enabled ? 'enabled' : 'disabled'} in ${channel}`);
 });
 
 chatClient.onSub((channel, user, subInfo, msg, chatClient) => {
     subscribeEvent(channel, user, subInfo, msg, chatClient);
-    // console.log(`User ${user} has subscribed to ${channel}. Sub info:`, subInfo);
 });
 
 chatClient.onResub((channel, user, subInfo, msg, chatClient) => {
