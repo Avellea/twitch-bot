@@ -15,7 +15,7 @@ export default function quoteCreate(channel, user, message, chatClient) {
     }
 
     // Read existing quotes to determine the next quote number
-    fs.readdir(`quotes/${channel}`, (err, files) => {
+    fs.readdir(`assets/quotes/${channel}`, (err, files) => {
         if (err) {
             console.error('Error reading quotes directory:', err);
             chatClient.say(channel, `@${user}, there was an error adding your quote. Please try again later.`);
@@ -23,7 +23,7 @@ export default function quoteCreate(channel, user, message, chatClient) {
         }
 
         const nextQuoteNumber = files.length + 1;
-        const filePath = `quotes/${channel}/${nextQuoteNumber}.txt`;
+        const filePath = `assets/quotes/${channel}/${nextQuoteNumber}.txt`;
 
         // Write the new quote to a file
         fs.writeFile(filePath, quoteText, (err) => {
