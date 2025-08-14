@@ -12,7 +12,7 @@ export default function quoteCommand(channel, user, message, chatClient) {
     if (!quoteNumber) {
         fs.readdir(`assets/quotes/${channel}`, (err, files) => {
             var randomQuote = Math.floor((Math.random() * files.length) + 1);
-            getQuote(randomQuote, channel, chatClient);
+            getQuote(randomQuote, user, channel, chatClient);
         })
         return;
     }
