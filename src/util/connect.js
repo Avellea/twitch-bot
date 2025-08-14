@@ -8,6 +8,7 @@ import { ApiClient } from '@twurple/api';
 import handleCommand from './commandHandler.js';
 
 // Event functions
+import messageEvent from '../events/onMessage.js';
 import emoteOnlyEvent from '../events/emoteOnly.js';
 import subscribeEvent from '../events/onSubscribe.js';
 import resubscribeEvent from '../events/onResubscribe.js';
@@ -27,6 +28,19 @@ const authProvider = new StaticAuthProvider(
 
 const apiClient = new ApiClient({ authProvider });
 
+async function getBannedUsers(channelName) {
+    const user = await api.users.getUserByName(channelName);
+    const paginator = api.moderation.getBannedUsersPaginated(user);
+    const bannedUsers = [];
+    for await(const ban of paginator) {
+        bannedUsers.push({
+            userName: ban.userName
+        });
+    }
+    return bannedUsers;
+    // console.log(user);
+}
+
 // This is the actual "client" that does the chatting. 
 const chatClient = new ChatClient({
     authProvider,
@@ -36,7 +50,7 @@ const chatClient = new ChatClient({
 
 // Connect to Twitch chat
 // We do a little error handling here Pepega
-export function connect() {
+export async function connect() {
     try {
         console.log(`Connecting to chat as ${MY_CHANNEL}...`);
         chatClient.connect();
@@ -64,10 +78,11 @@ export function disconnect() {
 */
 
 chatClient.onMessage((channel, user, message, msg) => {
-    if(!message.startsWith('!')) return; // Ignore messages that don't start with '!'
+    messageEvent(channel, user, message, msg, apiClient, chatClient);
+    // if(!message.startsWith('!')) return; // Ignore messages that don't start with '!'
 
     // Pass off the message to the command handler
-    handleCommand(channel, user, message, msg, apiClient, chatClient);
+    // handleCommand(channel, user, message, msg, apiClient, chatClient);
 });
 
 chatClient.onEmoteOnly((channel, enabled) => {
