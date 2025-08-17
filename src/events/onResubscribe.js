@@ -3,5 +3,5 @@
 
 export default function resubscribeEvent(channel, user, subInfo, msg, chatClient) {
     console.log(`User ${user} has subscribed to ${channel}. Sub info:`, subInfo);
-    chatClient.say(channel, `kazuki25Pet Thank you @${user} for subscribing! They've been subscribed for ${subInfo.months}! kazuki25Wave`);
+    chatClient.say(channel, `kazuki25Pet Thank you @${user} for subscribing! They've been subscribed for ${subInfo.months}! kazuki25POG`);
 }
