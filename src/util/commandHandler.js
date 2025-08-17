@@ -11,6 +11,7 @@ import modCheck from '../util/modCheck.js';
 import coinflipCommand from '../commands/coinflip.js';
 import discordCommand from '../commands/discord.js';
 import helpCommand from '../commands/help.js';
+import headpatCommand from '../commands/headpat.js'
 import lurkCommand from '../commands/lurk.js';
 import quoteCreate from '../commands/quoteCreate.js';
 import quoteCommand from '../commands/quote.js';
@@ -43,6 +44,16 @@ export default function handleCommand(channel, user, message, msg, apiClient, ch
     if (message.toLowerCase() === '!help') {
         helpCommand(channel, user, chatClient);
         return;
+    }
+
+
+    if (message.toLowerCase().startsWith('!headpat')) {
+        const targetUser = message.split(' ')[1];
+        if (targetUser) {
+            headpatCommand(user, targetUser, channel, chatClient);
+        } else {
+            chatClient.say(channel, `${user} gives everyone headpats!`);
+        }
     }
 
 
