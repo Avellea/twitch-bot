@@ -8,5 +8,31 @@
 
 // Main entry point
 
-import { connect } from './util/connect.js';
-connect();
+import { connect, disconnect } from './util/connect.js';
+
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+const app = express();
+const port = 3000;
+
+app.use(express.static(path.join(__dirname, '../public')));
+
+app.get('/api/enable', (req, res) => {
+    connect();
+    res.json({ message: 'Bot enabled.' });
+});
+
+app.get('/api/disable', (req, res) => {
+    disconnect();
+    res.json({ message: 'Bot disabled.' });
+});
+
+app.listen(port, () => {
+    console.log(`Twitch Bot CPanel listening at http://localhost:${port}`);
+});
