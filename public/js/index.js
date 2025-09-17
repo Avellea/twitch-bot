@@ -25,8 +25,3 @@ function disableBot() {
 
     console.log('Bot disabled')
 }
-
-function getQuotes() {
-    // fetch('/api/quotes')
-
-}
