@@ -12,11 +12,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
     "@twurple/api": "^7.4.0",
     "@twurple/auth": "^7.4.0",
     "@twurple/chat": "^7.4.0",
     "@twurple/eventsub-ws": "^7.4.0",
     "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "postgres": "^3.4.7",
     "twurple": "^1.0.0"
   },
   "devDependencies": {
