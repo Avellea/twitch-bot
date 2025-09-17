@@ -2,32 +2,41 @@
 // This command reads all of the text files in a folder named after the channel it was executed in,
 // then selects either a random quote (if no argument is provided) or a quote matching the provided number.
 
-// I should refactor this eventually instead of constant file listing, maybe a cache? Irdk.
+// Refactored! It uses a database now!
 
-import * as fs from 'fs';
+import supabase from '../util/supabase.js';
 
 export default function quoteCommand(channel, user, message, chatClient) {
     const quoteNumber = message.split(' ')[1];
 
     if (!quoteNumber) {
-        fs.readdir(`assets/quotes/${channel}`, (err, files) => {
-            var randomQuote = Math.floor((Math.random() * files.length) + 1);
-            getQuote(randomQuote, user, channel, chatClient);
-        })
+        supabase
+            .from(channel)
+            .select()
+            .then(({ data, error }) => {
+                if (error) {
+                    console.error('Error fetching quotes:', error);
+                    chatClient.say(channel, `@${user}, there was an error fetching a quote. Please try again later.`);
+                } else {
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const randomQuote = data[randomIndex];
+                    chatClient.say(channel, `Quote #${randomQuote.id}: ${randomQuote.quote}`);
+                }
+            });
         return;
     }
-    getQuote(quoteNumber, user, channel, chatClient);
-}
 
-function getQuote(quoteNumber, user, channel, chatClient) {
-    fs.readFile(`assets/quotes/${channel}/${quoteNumber}.txt`, 'utf8', (err, data) => {
-        if (err) {
-            console.error(`Error reading quote ${quoteNumber}:`, err);
-            chatClient.say(channel, `@${user}, I couldn't find quote #${quoteNumber}. Please check the number and try again.`);
-            return;
-        }
-        // Send the quote to the chat
-        chatClient.say(channel, `Quote #${quoteNumber}: ${data.trim()}`);
-
-    });
+    supabase
+        .from(channel)
+        .select()
+        .eq('id', quoteNumber)
+        .then(({ data, error }) => {
+            if (error || data.length === 0) {
+                console.error(`Error fetching quote ${quoteNumber}:`, error);
+                chatClient.say(channel, `@${user}, I couldn't find quote #${quoteNumber}. Please check the number and try again.`);
+            } else {
+                const quote = data[0];
+                chatClient.say(channel, `Quote #${quote.id}: ${quote.quote}`);
+            }
+        });
 }

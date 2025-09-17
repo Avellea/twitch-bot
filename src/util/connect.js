@@ -74,10 +74,10 @@ chatClient.onEmoteOnly((channel, enabled) => {
     emoteOnlyEvent(channel, enabled, chatClient);
 });
 
-chatClient.onSub((channel, user, subInfo, msg, chatClient) => {
+chatClient.onSub((channel, user, subInfo, msg) => {
     subscribeEvent(channel, user, subInfo, msg, chatClient);
 });
 
-chatClient.onResub((channel, user, subInfo, msg, chatClient) => {
+chatClient.onResub((channel, user, subInfo, msg) => {
     resubscribeEvent(channel, user, subInfo, msg, chatClient);
 })
