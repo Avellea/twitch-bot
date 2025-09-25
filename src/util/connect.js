@@ -7,6 +7,8 @@ import { ApiClient } from '@twurple/api';
 // Utility functions
 import handleCommand from './commandHandler.js';
 
+import globals from './global.js';
+
 // Event functions
 import messageEvent from '../events/onMessage.js';
 import emoteOnlyEvent from '../events/emoteOnly.js';
@@ -44,19 +46,22 @@ export async function connect() {
         console.log(`Connecting to chat as ${MY_CHANNEL}...`);
         chatClient.connect();
         console.log('Connected to chat.');
+        return true;
     } catch (error) {
         console.error('Error connecting to chat:', error);
+        return false;
     }
 }
 
-// Unused for now.
 export function disconnect() {
     try {
         console.log('Disconnecting from chat...');
         chatClient.quit();
         console.log('Disconnected from chat.');
+        return true;
     } catch (error) {
         console.error('Error disconnecting from chat:', error);
+        return false;
     }
 }
 
@@ -81,3 +86,11 @@ chatClient.onSub((channel, user, subInfo, msg) => {
 chatClient.onResub((channel, user, subInfo, msg) => {
     resubscribeEvent(channel, user, subInfo, msg, chatClient);
 })
+
+chatClient.onConnect(() => {
+    globals.botStatus = 1; // Bot is up
+});
+
+chatClient.onDisconnect(() => {
+    globals.botStatus = 0; // Bot is down
+});

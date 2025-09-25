@@ -2,35 +2,43 @@
     This is really just a toy project to learn how to use twurple.
     I don't really know if I'll stick with this, but it's interesting to learn I guess.
     Maybe MK can take a look too and see if she has any ideas.
-
-    Also, no gamba PepeLaugh
 */
 
 // Main entry point
 
-import { connect, disconnect } from './util/connect.js';
+import app from './util/api.js';
 
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import getStatus from './routes/status.js'
+import enableBot from './routes/enable.js';
+import disableBot from './routes/disable.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-
-const app = express();
 const port = 3000;
 
-app.use(express.static(path.join(__dirname, '../public')));
-
 app.get('/api/enable', (req, res) => {
-    connect();
-    res.json({ message: 'Bot enabled.' });
+    if(enableBot()) {
+        res.json({status: "1", message: "Bot enabled."});
+    } else {
+        res.json({status: "0", message: "Failed to enable bot."});
+    }
+    // enableBot();
+    // // res.json({ message: 'Bot enabled.' });
+    // res.json({status: "1", message: "Bot enabled."});
 });
 
+
 app.get('/api/disable', (req, res) => {
-    disconnect();
-    res.json({ message: 'Bot disabled.' });
+    if(disableBot()) {
+        res.json({status: "0", message: "Bot disabled."});
+    } else {
+        res.json({status: "1", message: "Failed to disable bot."});
+    }
+    // disableBot();
+    // // res.json({ message: 'Bot disabled.' });
+    // res.json({status: "0", message: "Bot disabled."});
+});
+
+app.get('/api/status', (req, res) => {
+    res.json(getStatus());
 });
 
 app.listen(port, () => {

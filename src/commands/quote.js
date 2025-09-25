@@ -6,37 +6,43 @@
 
 import supabase from '../util/supabase.js';
 
-export default function quoteCommand(channel, user, message, chatClient) {
+export default async function quoteCommand(channel, user, message, chatClient) {
     const quoteNumber = message.split(' ')[1];
 
     if (!quoteNumber) {
-        supabase
-            .from(channel)
-            .select()
-            .then(({ data, error }) => {
-                if (error) {
-                    console.error('Error fetching quotes:', error);
-                    chatClient.say(channel, `@${user}, there was an error fetching a quote. Please try again later.`);
-                } else {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const randomQuote = data[randomIndex];
-                    chatClient.say(channel, `Quote #${randomQuote.id}: ${randomQuote.quote}`);
-                }
-            });
-        return;
+        const { count } = await supabase
+        .from(channel)
+        .select("", { count: "exact", head: true });
+
+        if (count > 0) {
+            // 2. Pick a random offset
+            const randomIndex = Math.floor(Math.random(), count);
+            // console.log(randomIndex);
+            console.log(count)
+
+            const { data, error } = await supabase
+                .from(channel)
+                .select("*")
+                .range(randomIndex, randomIndex); // get just that row
+
+            console.log(data);
+            chatClient.say(channel, `Quote #${data[0].id}: ${data[0].quote}`);
+
+            return;
+        }
     }
 
-    supabase
-        .from(channel)
-        .select()
-        .eq('id', quoteNumber)
-        .then(({ data, error }) => {
-            if (error || data.length === 0) {
-                console.error(`Error fetching quote ${quoteNumber}:`, error);
-                chatClient.say(channel, `@${user}, I couldn't find quote #${quoteNumber}. Please check the number and try again.`);
-            } else {
-                const quote = data[0];
-                chatClient.say(channel, `Quote #${quote.id}: ${quote.quote}`);
-            }
-        });
+    // supabase
+    //     .from(channel)
+    //     .select()
+    //     .eq('id', quoteNumber)
+    //     .then(({ data, error }) => {
+    //         if (error || data.length === 0) {
+    //             console.error(`Error fetching quote ${quoteNumber}:`, error);
+    //             chatClient.say(channel, `@${user}, I couldn't find quote #${quoteNumber}. Please check the number and try again.`);
+    //         } else {
+    //             const quote = data[0];
+    //             chatClient.say(channel, `Quote #${quote.id}: ${quote.quote}`);
+    //         }
+    //     });
 }
